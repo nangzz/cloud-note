@@ -1,6 +1,0 @@
-* substr(last_name, -1, 1);
-// 맨 마지막부터 한글자 가져와라
-
-* substr(first_name, 1, 1);
-// 맨 처음부터 한글자 가져와라
-
