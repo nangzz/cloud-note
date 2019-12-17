@@ -1,3 +1,4 @@
+** DB 복제하기 **
 ** 순서대로 따라할 것 **
 ** 12_17
 node02 만들기
@@ -208,12 +209,12 @@ master_log_file='mysql-bin.000002',\ // 파일명 변경(master꺼)
 master_log_pos=154; // 포지션 숫자 변경(master꺼)
 
 // 리눅스로 갈 때
-change master to master_host='192.168.56.11', master_port=13306, master_user='replicate_user', master_password='test1234',\
+change master to master_host='192.168.56.12', master_port=13306, master_user='replicate_user', master_password='test1234',\
 master_log_file='mysql-log_bin.000004', master_log_pos=154; 
 
-// 윈도우로 갈 때
+// 윈도우로 갈 때 (slave에)
 change master to master_host='127.0.0.1', master_port=13306, master_user='replicate_user', master_password='test1234',\
-master_log_file='mysql-log_bin.000003', master_log_pos=154; 
+master_log_file='mysql-log_bin.000005', master_log_pos=432; 
 
 * 서버 재부팅
 * 윈도우에서는 서버재부팅할 때 윈도우 서비스 가서 mysql80 재실행 시킴
@@ -241,10 +242,10 @@ mysql
 // 연동 잘 됐으면 동기화, 복제 완료임
 
 
-* 새롭게 해보자!
-<윈도우>
-> drop database cloud_db; // 일단 있던거 지워보고
+* 새롭게 백업도 해보자!
+12_17_db_replication_@_backup
 
 
+** master의 바이너리로그 파일이 slave에서 작동하여 동기화가 되는거야 **
+** master에 했던 설정을 slave하고 slave에 했던 설정을 master에 하면 양방향 동기화 **
 
-,j(=mysGE7s?

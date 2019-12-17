@@ -1,4 +1,7 @@
-사용중인 master db 복제 (cloud_db)
+** 사용중인 master db 복제 (cloud_db) **
+** 백업하기! **
+// master 작업 도중에 slave로 동기화시켜야할 때 오류가능성이 높다.
+// 그래서 master 백업을 통해 slave로 옮겨놓고 그 다음 동기화를 해주는 것이 안전하다!
 
 1. slave 에서 기존 cloud_db 삭제
 	- drop database cloud_db
@@ -27,8 +30,10 @@
 
 6. 여기까지하면 master db에서의 변경 내용을 slave db에서 확인 가능하다!
 
-tjkcupw#V6xx
 
+
+
+** 복제하기 ** 위 문제에 대한 답안
 <node01에서 - vagrant X>
 
 파일 옮기기 위해 공유하도록 설정하기
@@ -48,3 +53,13 @@ $ mv backup.sql data // data 폴더로 옮기겠다.
 <윈도우 (slave)>
 $ cd data
 $ mysql -u root -p cloud_db < backup.sql //하면 백업파일이 옮겨짐
+
+
+
+
+* 메모리 확인 
+$ free -h
+
+* cpu 사용량
+$ top
+
