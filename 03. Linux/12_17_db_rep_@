@@ -1,5 +1,30 @@
 ** 순서대로 따라할 것 **
+** 12_17
+node02 만들기
 
+* vagrantfile에서 
+
+# Ansible-Node02
+  config.vm.define:"node02" do |cfg|
+    cfg.vm.box = "centos/7"
+    cfg.vm.provider:virtualbox do |vb|
+        vb.name="Node02"
+        vb.customize ["modifyvm", :id, "--cpus", 1]
+        vb.customize ["modifyvm", :id, "--memory", 1024]
+    end
+    cfg.vm.host_name="node02"
+    cfg.vm.network "public_network", ip: "192.168.56.12"
+    cfg.vm.network "forwarded_port", guest: 22, host: 29211, auto_correct: false, id: "ssh"
+    cfg.vm.network "forwarded_port", guest: 80, host: 20080
+    cfg.vm.network "forwarded_port", guest: 3306, host: 23306
+  end
+  
+ > node02로 복붙하여 하나 더 만들어줌
+ 
+ 
+ * github 자료 > mysql 설치 과정 따라하기
+ 
+ 
 <master>
 node01
 Work/vagrant에서
