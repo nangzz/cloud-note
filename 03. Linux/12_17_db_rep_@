@@ -1,0 +1,153 @@
+** 순서대로 따라할 것 **
+
+<master>
+node01
+Work/vagrant에서
+$ vagrant up
+$ mysql -u root -p // mysql 접속
+
+> create database cloud_db default character set utf8; // cloud_db 데이터베이스 생성
+> show databases;
+
+> create user 'user1'@'%' identified by 'test1234'; // user1 계정 생성
+> set global validate_password_policy=LOW; // pw 설정
+
+> grant all privileges on cloud_db.* to 'user1'@'%' identified by 'test1234'; // 계정에 권한 부여
+
+> exit
+
+
+$ mysql -u user2 -p -h 192.168.56.12 // master에서 slave로 접속하는 것 / -h : 호스트네임
+
+* putty
+
+
+
+<slave>
+node02
+Work/vagrant에서
+$ vagrant up
+$ vagrant ssh node02 // node02로 접속
+$ ps -el | grep mysql // mysql 작동 중인지 확인
+$ mysql -u root -p // mysql 접속
+
+> create database cloud_db default character set utf8;
+
+> create user 'user2'@'%' identified by 'test1234'; // user2 계정 생성
+> set global validate_password_policy=LOW;
+
+> grant all privileges on cloud_db.* to 'user2'@'%' identified by 'test1234';
+
+> exit
+
+
+$ mysql -u user1 -p -h 192.168.56.11 // slave에서 master로 접속하는 것 / -h : 호스트네임
+: 접속 안돼서 설정 추가하고 방화벽 내려주는 작업 함(아래)
+
+
+
+
+*
+<master, slave 에서>
+$ sudo vi /etc/my.cnf
+[mysqld]
+bind-address=0.0.0.0 // 모든 ip 허용시켜주겠다.
+추가
+esc 누르고 :wg! 하면 저장됨
+
+서버 재부팅
+$ sudo systemctl restart mysqld
+// $ sudo service mysql restart 이런 방법도 있지만 여기선 안씀
+
+<master랑 slave 둘다>
+$ sudo yum -y install net-tools
+$ ifconfig // 이 명령어 사용 가능
+
+$ sudo systemctl stop firewalld // 방화벽 내리는 것
+$ netstat -nptl // 포트 확인 3306 열려있는지 확인 (0.0.0.0:3306)
+
+
+<master>
+$ mysql -u user2 -p -h 192.168.56.12 // m -> s 접속되는지 확인해
+
+
+<slave>
+$ mysql -u user2 -p -h 192.168.56.11 // s -> m 접속되는지 확인해
+
+
+
+
+<master>
+mysql> exit
+
+$ sudo vi /etc/my.cnf
+[mysqld]
+bind-address=0.0.0.0 이 밑에다가
+
+server-id=1 (slave는 2)
+log_bin=mysql-bin (master)
+저장
+
+
+<slave>
+mysql> exit
+
+$ sudo vi /etc/my.cnf
+[mysqld]
+bind-address=0.0.0.0 이 밑에다가
+
+server-id=2
+replicate-do-db='cloud_db'(slave) // cloud_db를 레플리케이션해서 가져올 것이라는 것이라는
+저장
+
+둘다 서버 재부팅
+$ sudo systemctl restart mysqld
+
+
+
+
+
+<master, slave>
+$ mysql -u root -p
+
+
+<master>
+> use mysql
+> select host, user from user;
+replicate_user가 있어야하는데 없으면
+
+> grant replication slave on *.* to 'replicate_user'@'%' identified by 'test1234' 
+추가
+
+> show master status // 파일이랑 포지션 숫자 기억해두기
+
+
+<slave>
+>
+change master to\
+master_host='192.168.56.11',\
+master_user='replicate_user',\
+master_password='test1234',\
+master_log_file='mysql-bin.000005',\ // 위에서 확인한 파일이랑 포지션 숫자 넣어주기
+master_log_pos=306;
+
+> exit
+
+$ sudo systemctl restart mysqld // 설정 변경후 서버 재부팅 필요
+$ mysql -u root -p
+> show slave status\G; // 설정 정보 확인 (포지션이랑 파일명 잘 맞춰져 있는지 확인)
+> show database;
+> use cloud_db;
+> show tables; // 비어있는 것 확인
+
+
+<slave>
+작동이 안돼서 윈도우로 대신하여 진행함.. 윈도우 로컬 아이피로 접속할 것
+127.0.0.1:13306
+
+
+<윈도우> ** 윈도우 slave로 하게될 것
+cmd
+바로
+$ mysql -u root -p
+> 
