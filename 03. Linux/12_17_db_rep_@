@@ -21,9 +21,9 @@ node02 만들기
   
  > node02로 복붙하여 하나 더 만들어줌
  
- 
+ $ vagrant ssh node01에서
  * github 자료 > mysql 설치 과정 따라하기
- 
+ (원래는 node02에도 해야하는데 어차피 node02 연결이 안돼서.. 나중에해도됨)
  
 <master>
 node01
@@ -153,8 +153,8 @@ change master to\
 master_host='192.168.56.11',\
 master_user='replicate_user',\
 master_password='test1234',\
-master_log_file='mysql-bin.000005',\ // 위에서 확인한 파일이랑 포지션 숫자 넣어주기
-master_log_pos=306;
+master_log_file='mysql-log_bin.000003',\ 
+master_log_pos=429;
 
 > exit
 
@@ -176,3 +176,75 @@ cmd
 바로
 $ mysql -u root -p
 > 
+
+
+<master>
+> show processlist\G;
+> show master status; // 파일이랑 포지션 숫자 기억해두기
+
+<window>
+mysql
+> create database cloud_db default character set utf8;
+> create user 'user3'@'%' identified by 'test1234';
+> grant all privileges on cloud_db.* to 'user3'@'%' with grant option; // 윈도우 grant 는 명령어가 좀 다름
+> exit
+
+$ code "C:\ProgramData\MySQL\MySQL Server 8.0\my.ini"
+[mysqld]에다가 
+    server-id=3
+    replicate-do-db='cloud_db'
+추가
+
+$ mysql -u root -p 
+
+> stop slave;
+>
+change master to\
+master_host='127.0.0.1',\
+master_port=13306,\
+master_user='replicate_user',\
+master_password='test1234',\
+master_log_file='mysql-bin.000002',\ // 파일명 변경(master꺼)
+master_log_pos=154; // 포지션 숫자 변경(master꺼)
+
+// 리눅스로 갈 때
+change master to master_host='192.168.56.11', master_port=13306, master_user='replicate_user', master_password='test1234',\
+master_log_file='mysql-log_bin.000004', master_log_pos=154; 
+
+// 윈도우로 갈 때
+change master to master_host='127.0.0.1', master_port=13306, master_user='replicate_user', master_password='test1234',\
+master_log_file='mysql-log_bin.000003', master_log_pos=154; 
+
+* 서버 재부팅
+* 윈도우에서는 서버재부팅할 때 윈도우 서비스 가서 mysql80 재실행 시킴
+
+> show slave status\G;
+: Slave_IO_running : yes인지 확인
+
+> use cloud_db;
+
+
+
+
+
+-------- 연결 확인하기 --------
+<master>
+mysql
+> create table members(id int, name varchar(20));
+> insert into members values(1, 'test1');
+
+
+<윈도우(slave)>
+> show tables;
+> select * from members;
+// master랑 연동됐는지 확인하기
+// 연동 잘 됐으면 동기화, 복제 완료임
+
+
+* 새롭게 해보자!
+<윈도우>
+> drop database cloud_db; // 일단 있던거 지워보고
+
+
+
+,j(=mysGE7s?
