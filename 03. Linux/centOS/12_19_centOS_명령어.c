@@ -1,5 +1,8 @@
+http://59.29.224.67/ 에서
+* centOS 설치
 * vmware 설치
-
+* Xshell5 설치
+* ubuntu 설치
 
 * 시스템 종료
 $ poweroff
@@ -83,3 +86,7 @@ $ su - <계정명>
 
 * 복사
 $ cp ifcfg-ens33 /root // ifcfg-ens33을 root에 복붙
+
+
+* 네트워크 재실행
+$ systemctl restart network
