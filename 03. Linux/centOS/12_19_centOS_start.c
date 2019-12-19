@@ -16,3 +16,9 @@ Bridged : local 통신 + outbound 인터넷 가능 + 물리망과 연동 가능-
 * vmware 핫 키
 > 물리적 디바이스의 ownership을 vm에도 부여
 > Ctrl + Alt
+
+
+** Xshell
+> centOS 리모트 하는 것
+> 셸에서 컨트롤하면 centOS에서 적용됨
+> 예를들면 셸에서 reboot 명령어 사용하면 centOS에서 reboot 되는 것
