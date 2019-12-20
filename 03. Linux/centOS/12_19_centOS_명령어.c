@@ -38,6 +38,14 @@ $ ps -ef | wc -l // ps -ef 명령의 결과 라인 수를 센다.
 $ ip a
 
 
+* dhclient ens33
+> ip 안받아지면 받아오기위해 쓰는 명령어
+
+
+* 커널 버전 확인
+$ uname -a
+
+
 * 런레벨
 $ ls -l runlevel?.target // runlevel... 로 시작하고 .target 확장자 가진 파일 보여줘
 
@@ -78,15 +86,15 @@ ctrl + d
 * 로그아웃안하고 계정변경하기 - 기본 위에 가상 콘솔 생성해주는 것
 $ su - <계정명>
 // root에서는 바로 되는데 다른데서 root로 가는건 암호 필요해
-
+--> 가상터미널을 띄우는거기때문에 사용다하면 exit해서 종료시켜야해 (= ctrl+d)
 
 * gedit
 > vmware에서만 사용가능해서 리모트에서나 등등에는 vi 사용해야함
 
 
 * 복사
-$ cp ifcfg-ens33 /root // ifcfg-ens33을 root에 복붙
+$ cp ifcfg-ens33 /root // ifcfg-ens33을 root에 복붙 (backup)
 
 
 * 네트워크 재실행
-$ systemctl restart network
+$ systemctl restart network (ubuntu - networking)
