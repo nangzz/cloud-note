@@ -33,7 +33,7 @@ ubuntu의 sudo 와 비슷한게 wheel
 
 * 사용자 추가
 $ useradd <사용자명>
-$ useradd -u 1111 newuser // -u : 아이디 지정
+$ useradd -u 1111 newuser // -u : 아이디 지정p
 -g : 그룹 지정
 -d : 홈 디렉토리 지정
 > 옵션 안쓰면 기본으로 다 지정됨

@@ -1,0 +1,125 @@
+VM과 host간 file 공유
+
+VM settings에서 폴더 공유
+vmhgfs-fuse /mnt
+#cd /mnt
+#ls
+#cd share_linux
+#mkdir /centos
+#mount -o loop CentOS-7-x86_64-DVD-1611.iso /centos
+#losetup -a
+#df -h
+#ls /centos
+----------------------------------------------------------------------
+
+ubuntu에서
+
+1. su -   (root로 전환 후)
+2. hostnamectl set-hostname ubuntu  (exit 후 다시 login해야 적용)
+3. vi /etc/hosts
+172.20.0.129  ubuntu
+
+4. vi /etc/sudoers
+
+%sudo ALL=ALL   NOPASSWD:  ALL          <------NOPASSWD: insert하기
+
+5. usermod -aG docker student (exit-->login를 다시해야 반영)
+
+----------------------------------------------------------------------
+centos에서도 동일 작업
+
+1. su -   (root로 전환 후)
+2. hostnamectl set-hostname centos  (exit 후 다시 login해야 적용)
+3. vi /etc/hosts
+172.20.0.128  centos
+
+4. vi /etc/sudoers
+
+%wheel ALL=ALL   NOPASSWD:  ALL          <------NOPASSWD: insert하기
+----------------------------------------------------------------------------
+
+gshadow로 그룹관리하기
+
+centos에서 root로 작업
+
+#groupadd project
+#gshadow -A student project
+#su - student
+student# gshadow -a user1 project
+#grep user /etc/group /etc/gshadow
+#gshadow -a user2 project
+#grep user /etc/group /etc/gshadow
+#gshadow -d user1 project
+#grep user /etc/group /etc/gshadow
+-----------------------------------------------------------------------------------
+root에서
+tar cf /tmp/my.tar /etc/sysconfig/
+ls -l /tmp/my* 
+tar cfJ /tmp/my.tar.xz /etc/sysconfig/
+ls -l /tmp/my* 
+tar cfz /tmp/my.tar.gz /etc/sysconfig/
+ls -l /tmp/my* 
+tar cfj /tmp/my.tar.bz2 /etc/sysconfig/
+ls -l /tmp/my* 
+zip /tmp/my.zip /etc/sysconfig/* 
+ls -l /tmp/my* 
+unzip -l /tmp/my.zip 
+mkdir zip  
+cd zip  
+unzip /tmp/my.zip  
+ls   
+ls -R  
+cd ..  
+rm -rf zip 
+ls -l /tmp/my* 
+tar tvf /tmp/my.tar.xz 
+tar tvf /tmp/my.tar.gz 
+tar tvf /tmp/my.tar.bz2 
+mkdir tar  
+cd tar  
+tar xf /tmp/my.tar.bz2 
+ls   
+
+--------------------------------------------
+[root@centos ~]# crontab -e
+* * * * * date > /dev/pts/3
+[root@centos ~]# crontab -l
+
+-------------------------------------------
+
+  # at 5:15pm 
+at> yum update -y
+at> reboot
+at> ^d
+#atq
+# at -c 1
+# atq
+---------------------------------------------
+
+openssh server 실습하기
+
+1. key 기반 인증 // aws에서 가상머신 받을 때 키페어(키파일) 생성하는 것과 같음
+centos의 root
+# ssh-keygen   (기본으로 생성)
+# cd .ssh
+# ls
+# ssh-copy-id student@172.20.0.129  (ubuntu ip)  <---- 공개키 등록
+#ls
+#cat id_rsa (개인 키 보기)
+#ssh student@172.20.0.129  (key기반 접속 시도)
+
+ubuntu$cat .ssh/authorized_keys  (등록키 확인)
+
+2.ubuntu에 root login 허용하기
+ubuntu의 student에서
+$sudo vi /etc/ssh/sshd_config
+
+PermitRootLogin yes
+#PermitRootLogin prohibit-password
+
+$sudo systemctl restart sshd
+
+centos에서 접속시도 #ssh root@172.20.0.129
+
+
+
