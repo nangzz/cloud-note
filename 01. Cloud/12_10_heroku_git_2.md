@@ -1,11 +1,27 @@
-* heroku --> Paas
+# Heroku & Github
+
+
+
+## 1. Heroku
+
+* heroku --> Paas (Platform as a Service)
 * heroku의 회원가입 등 유저서비스들 --> Saas
 
-
-$ git remote add <name> <url>// remote 연결
+```shell
+$ git remote add <name> <url> // remote 연결
 $ heroku apps // 있는 어플리케이션 확인
 
-*
+$ git remote add <name> <url> // remote 연결
+$ heroku apps // 있는 어플리케이션 확인
+```
+
+
+
+---
+
+ 
+
+```shell
 $ heroku git:remote -a helloheroku9593  // -a : 에플리케이션 지정
 
 $ git remote -v 
@@ -26,14 +42,22 @@ $ heroku ps // 프로세스 작동
 $ heroku logs --tail // --tail : 로그는 너무 기니까 마지막 부분을 보여달라
 
 $ git remote remove heroku // heroku 란 이름의 repository를 지움
+```
 
 
-<github와 연동>
 
+
+
+## 2. github과의 연동
+
+```shell
 $ git remote add origin https://github.com/kangahpro7/helloheroku9593.git // origin이라는 이름으로 remote에 add 할거야
 $ git add
 $ git commit -m "upload sample web app to GITHUB" // local에 올림
 $ git push origin master // local에 있는 master가 origin 으로 보내짐
+```
+
+
 
 
 * 수동 deploys
@@ -50,20 +74,27 @@ $ git push origin master // local에 있는 master가 origin 으로 보내짐
 
 
 
-<실습>
+
+
+## 3. 실습
 
 1. nodejs 프로젝트 생성
 	- express ...
+	
+	```shell
 	$ express --session --ejs --css stylus <project name> // express : nodejs 파일 템플릿 자동 생성해주는 것 
 	$ cd <project name>
 	$ npm install // 필요한 패키지 같은거 자동 설치 (node_modules 파일이 생기고 그 안에 다 다운됨)
 	--개발 툴에서 express 통해 만든 폴더 오픈--
 	--코드 변경 (개발)--
+	```
+	
 	
 	
 2. nodejs의 프로젝트와 git 연동
 	- git init, add, remote, commit, push ...
 	
+	```shell
 	$ git init
 	--add, push 등 해주기 위해 해야할 작업(.git이 있어야 하므로)--
 	$ git init // (.git 생성)
@@ -72,11 +103,15 @@ $ git push origin master // local에 있는 master가 origin 으로 보내짐
 	$ git remote -v // remote가 어디로 연결되어있는가 를 보여줌
 	$ git remote add <name>-주로 origin <url>-깃주소 // remote 연결
 	$ git push origin master	
+```
 	
-
+	
+	
 3. heroku에 app 생성 (instance)
 	- dashboard or CLI에서 생성 가능
 		- heroku apps:create ...
+	
+	```shell
 	$ heroku apps:destroy helloheroku9593 // 애플리케이션 삭제 (기존에 있던 것 삭제)
 	$ heroku apps // 현재 있는 애플리케이션 확인
 	--heroku 사이트 가서 만들거나 터미널 통해서 create해서 만들거나--
@@ -84,6 +119,9 @@ $ git push origin master // local에 있는 master가 origin 으로 보내짐
 	$ dir // 만들어졌는지 확인
 	$ dir /ah // 숨은 파일 확인
 	$ git add . 
+	```
+	
+	
 
 
 4. heroku와 github 연동
