@@ -36,16 +36,16 @@
 	      
 
     3. master db에서 백업한 데이터를 slave db에 복원
-      
-        - 이 작업들이 완성되면 master db와 slave db는 동기화 완료임
-
-        ```shell
-        mysql -u root -p cloud_db < backup.sql 
-      # backup.sql 백업파일에 있는 것을 cloud_db에 가져오겠다(복원).
-        ```
-      
+      - 이 작업들이 완성되면 master db와 slave db는 동기화 완료임
         
-    
+```shell
+        mysql -u root -p cloud_db < backup.sql 
+        # backup.sql 백업파일에 있는 것을 cloud_db에 가져오겠다(복원).
+        ```
+  
+  
+  ​      
+  
     4. master db의 바이너리 로그 파일의 파일명과 포지션 숫자 확인
   
         ```mysql
