@@ -1,6 +1,6 @@
 [6] 각 이름이 ‘s’로 끝나는 사원들의 이름과 업무를 아래의 예와 같이 출력하고자 한다. 출력 시 성과 이름은 첫 글자가 대문자, 업무는 모두 대문자로 출력하고 머리글은 Employee JOBs로 표시하시오.
 	□예 Sigal Tobias is a PU_CLERK
->대문자 upper()
+>대문자 `upper()`
 
 ```mysql
 select concat(first_name, ' ', last_name, ' is a ', upper(job_id) ) as 'Employee JOBs'
@@ -14,7 +14,7 @@ where first_name like '%s';
 
 [7] 모든 사원의 연봉을 표시하는 보고서를 작성하려고 한다. 보고서에 사원의 성과 이름(Name으로 별칭), 급여, 수당여부에 따른 연봉을 포함하여 출력하시오. 수당여부는 수당이 있으면 “Salary + Commission”, 수당이 없으면 “Salary only”라고 표시하고, 별칭은 적절히 붙인다. 또한 출력 시 연봉이 높은 순으로 정렬한다.
 
->if, ifnull(a, 0) : a가 null이면 0
+>`if`, `ifnull(a, 0)` : a가 null이면 0
 
 ```mysql
 m
@@ -41,9 +41,9 @@ order by salary desc;
 
 [8] 모든 사원들 성과 이름(Name으로 별칭), 입사일 그리고 입사일이 어떤 요일이였는지 출력하시오. 이때 주(week)의 시작인 일요일부터 출력되도록 정렬하시오.
 
-> dayname (oracle에선 to_char) : dayname('yyyy-mm-dd')이면 해당 날짜를 영어 요일로 변환
-> dayofweek : dayofweek('yyyy-mm-dd')이면 해당 날짜를 정수로 변환 (1~7 : 일~토)
-> date_format : '%W' - 영어요일 / '%w' - 정수
+> `dayname` (oracle에선 `to_char`) : `dayname('yyyy-mm-dd')`이면 해당 날짜를 영어 요일로 변환
+> `dayofweek` : `dayofweek('yyyy-mm-dd')`이면 해당 날짜를 정수로 변환 (1~7 : 일~토)
+> `date_format` : '%W' - 영어요일 / '%w' - 정수
 / date_add
 
 ```mysql
@@ -62,7 +62,7 @@ order by date_format(hire_date, '%w');
 
 
 [8-1]입사 요일별 인원수를 출력하시오.
->group by 1; // select로 가져온 첫번째 컬럼에 대해 그룹핑하겠다. --> 속도 더 빠르다!
+>`group by 1;` // select로 가져온 첫번째 컬럼에 대해 그룹핑하겠다. --> 속도 더 빠르다!
 
 ```mysql
 select date_format(hire_date, '%W') as 'week'
@@ -90,8 +90,8 @@ from employees;
 
 
 [10] 각 사원이 소속된 부서별로 급여 합계, 급여 평균, 급여 최대값, 급여 최소값을 집계하고자 한다. 계산된 출력값은 6자리와 세 자리 구분기호, $ 표시와 함께 출력하고 부서번호의 오름차순 정렬하시오. 단, 부서에 소속되지 않은 사원에 대한 정보는 제외하고 출력시 머리글은 칭(alias) 처리하시오.
->sum, avg, max, min()
->format(값, 소수점 표현자리수) : format(salary, 1) - salary 값의 소수점 첫째짜리까지 나타낸다.
+>`sum`, `avg`, `max`, `min()`
+>`format(값, 소수점 표현자리수)` : `format(salary, 1)` - salary 값의 소수점 첫째짜리까지 나타낸다.
 
 ```mysql
 select  count(a.department_id) as 'count'
@@ -124,6 +124,7 @@ from
 	from employees
 	group by manager_id) as result;
 ```
+
 
 
 @ job_id가 IT_PROG U(합집합) salary가 급여 테이블의 D 레벨에 있는 직원은?

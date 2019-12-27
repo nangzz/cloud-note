@@ -39,8 +39,9 @@ INSERT INTO CahngeCols VALUES(2015,	50,	3);
 ```
 
 
-	- db_t2/toku2-1
-	- 추가
+
+- db_t2/toku2-1
+- 추가
 
 ```mysql
 CREATE TABLE Perm2
